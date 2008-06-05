@@ -1,0 +1,18 @@
+#labels Featured
+#A hobby and educational OS kernel written in C and Assembly
+= Introduction =
+
+This is my attempt to create a very small os kernel written in C and assembly.
+This project is influenced by several other OS projects. Specially LittleOS, and 
+Brans kernel tutorial and James tutorial.
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Booted from *GRUB* floppy.
+  * tested on *BOCHS*
+  * minimal test on real hardware  
+#  * Text in *bold* or _italic_
+#  * Headings, paragraphs, and lists
+#  * Automatic links to other wiki pages
