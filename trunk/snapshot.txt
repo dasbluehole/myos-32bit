@@ -1,0 +1,25 @@
+    ****************Hello Tiny OS-32****************
+    *****************Keep Patience******************
+    ================================================
+Setting up GDT    Done
+Setting up IDT    Done
+Setting up IRQs    Done
+    Installing Timer handler    Done
+    Initializing Key-Board    Done
+Starting Memory Manager(very basic)
+Physical Memory
+    Memory Total 32704 kb
+     Free 32673 kb
+     kernel takes 30 kb
+First we will mark all the pages as free    done
+Mark the reserved Pages(BIOS/Video)    done
+Marking Pages used by Kernel    done
+    Paging    enabled
+
+Goodbye
+int_ptr : 0x211008
+TODO:Memory manager,scheduler,threads OR processes, Shell,Few applications ,etc
+ß
+
+
+
