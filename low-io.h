@@ -31,6 +31,16 @@ inline static void outportw(unsigned short _port, unsigned short _data)
 	{
 		__asm__ __volatile__ ("outw %1, %0" : : "dN" (_port), "a" (_data));
 	}
+inline static unsigned int inportl(unsigned short _port)
+{
+	register unsigned int val;
+	__asm__ __volatile__ ("inl %%dx, %%eax" : "=a" (val) : "d" (_port));
+        return( val );
+}
+inline static void outportl(unsigned short _port, unsigned int _data)
+{
+	__asm__ __volatile__ ("outl %%eax, %%dx" : : "d" (_port), "a" (_data));
+}
 inline static void enable()
 {
 	__asm__ __volatile__ ("sti": : );

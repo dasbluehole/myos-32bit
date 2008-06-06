@@ -8,6 +8,7 @@ extern unsigned end;
 extern unsigned start;
 extern unsigned int total_mem;
 extern void probe_pci();
+extern void pci_scan();
 int main(multibootInfo *mbootinfo)
 {
 	//unsigned long mem_avail,mem_used,test_mem,tot_mem;
@@ -58,6 +59,7 @@ int main(multibootInfo *mbootinfo)
 	//int_ptr=(int*)kmalloc(200);
 	//kprintf("int_ptr : 0x%x\n",int_ptr);
 	probe_pci();
+	pci_scan();
 	kprintf("TODO:scheduler,threads OR processes, Shell,Few applications ,etc\n");
 	//do_page_fault= *ptr;
 	//setVideoMode(12);
