@@ -13,6 +13,13 @@ Add your content here.  Format your content with:
   * Booted from *GRUB* floppy.
   * tested on *BOCHS*
   * minimal test on real hardware  
+  * ia-32 architecture
+  * lacks a process manager, device drivers and many more(everything)
+= need code contribution =
+  * for network support(to support pinging others)
+  * good process manager
+  * everything you like to see under  an OS
+  * I forgot a small game too.( tic-tac-toe) will be noce.  
 #  * Text in *bold* or _italic_
 #  * Headings, paragraphs, and lists
 #  * Automatic links to other wiki pages
