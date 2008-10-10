@@ -60,6 +60,8 @@ int main(multibootInfo *mbootinfo)
 	//kprintf("int_ptr : 0x%x\n",int_ptr);
 	probe_pci();
 	pci_scan();
+	
+	init_floppy();
 	kprintf("TODO:scheduler,threads OR processes, Shell,Few applications ,etc\n");
 	//do_page_fault= *ptr;
 	//setVideoMode(12);

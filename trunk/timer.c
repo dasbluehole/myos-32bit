@@ -1,6 +1,6 @@
 /*Timer handler for our OS*/
 #include "low-io.h"
-int timer_ticks=0;
+static int timer_ticks=0;
 /* to set timer frequency IRQ0 frequency */
 void timer_phase(int hz)
 {
@@ -26,5 +26,16 @@ void timer_handler(struct regs *r)
 void install_timer()
 {
     /* Installs 'timer_handler' to IRQ0 */
+	timer_phase(1000);
     irq_install_handler(0, timer_handler);
+}
+int get_tick()
+{
+	return timer_ticks;
+}
+void sleep(int ms)
+{
+	int cur;
+	cur=get_tick();
+	while(cur+ms-get_tick());
 }
