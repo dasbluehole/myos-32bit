@@ -156,8 +156,8 @@ void _fault_handler(struct regs *r)
         /* Display the description for the Exception that occurred.
         *  In this tutorial, we will simply halt the system using an
         *  infinite loop */
-        kprintf(exception_messages[r->int_no]);
-        kprintf(" Exception. System Halted!\n");
+        kprintf("interrupt %d : %s\n",r->int_no,exception_messages[r->int_no]);
+        kprintf(". System Halted!\n");
 	asm volatile
 	(
 		"hlt"

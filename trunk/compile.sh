@@ -25,6 +25,7 @@ gcc  -Wall -Wextra -nostdlib -nostartfiles -nodefaultlibs -c char.c -o char.o
 gcc  -Wall -Wextra -nostdlib -nostartfiles -nodefaultlibs -c windows.c -o windows.o
 gcc  -Wall -Wextra -nostdlib -nostartfiles -nodefaultlibs -c label.c -o label.o
 gcc  -Wall -Wextra -nostdlib -nostartfiles -nodefaultlibs -c pci.c -o pci.o
+gcc  -Wall -Wextra -nostdlib -nostartfiles -nodefaultlibs -c ide.c -o ide.o
 
 echo "assembling .asm files"
 nasm -f elf loader.asm -o loader.o
@@ -33,6 +34,8 @@ nasm -f elf isr_wrap.asm -o isr_wrap.o
 echo
 echo "making the kernel by linking all"
 #ld -T link.ld loader.o low-io.o vga.o string.o gdt.o vsprintf.o mboot.o idt.o isr_wrap.o irq.o timer.o kbd.o kernel.o -o kernel
-ld -T link.ld loader.o vga.o string.o gdt.o mboot.o idt.o isr_wrap.o irq.o timer.o kbd.o phys_mem.o paging.o kmalloc.o gvga.o char.o windows.o label.o pci.o dma.o fdc.o kernel.o -o kernel
+ld -T link.ld loader.o vga.o string.o gdt.o mboot.o idt.o isr_wrap.o irq.o timer.o kbd.o phys_mem.o paging.o kmalloc.o gvga.o char.o windows.o label.o pci.o dma.o fdc.o ide.o kernel.o -o kernel
 echo "done"
 echo " copy this kernel to a grub floppy and boot from it"
+rm -f *.o
+rm -f *.*~
