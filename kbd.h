@@ -1,7 +1,14 @@
-/* copied from geekOS*/
+//////////////////////////////////////////////////////////
+// This file is a part of Nanos Copyright (C) 2008, 2009//
+// ashok.s.das@gmail.com                                //
+//////////////////////////////////////////////////////////
+// keyboard interface                                   //
+//                                                      //
+//////////////////////////////////////////////////////////
+
 #ifndef __KBD_H__
 #define __KBD_H__
-//#include "types.h"
+
 /*
  * I/O ports
  */
