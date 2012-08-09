@@ -3,7 +3,7 @@
 = Introduction =
 
 This is my attempt to create a very small os kernel written in C and assembly.
-This project is influenced by several other OS projects. Specially LittleOS, and 
+This project is influenced by several other OS projects. Specially LittleOS, GeekOS and 
 Brans kernel tutorial and James tutorial.
 
 
@@ -20,6 +20,10 @@ Add your content here.  Format your content with:
   * good process manager
   * everything you like to see under  an OS
   * I forgot a small game too.( tic-tac-toe) will be noce.  
+= Updates =
+
+9th august 2012: Directory structure modified, Code is cleaned up a bit, Makefile based build.
+
 #  * Text in *bold* or _italic_
 #  * Headings, paragraphs, and lists
 #  * Automatic links to other wiki pages
