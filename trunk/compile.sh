@@ -34,8 +34,14 @@ nasm -f elf isr_wrap.asm -o isr_wrap.o
 echo
 echo "making the kernel by linking all"
 #ld -T link.ld loader.o low-io.o vga.o string.o gdt.o vsprintf.o mboot.o idt.o isr_wrap.o irq.o timer.o kbd.o kernel.o -o kernel
-ld -T link.ld loader.o vga.o string.o gdt.o mboot.o idt.o isr_wrap.o irq.o timer.o kbd.o phys_mem.o paging.o kmalloc.o gvga.o char.o windows.o label.o pci.o dma.o fdc.o ide.o kernel.o -o kernel
+ld -T link.ld loader.o vga.o string.o gdt.o mboot.o idt.o isr_wrap.o \
+irq.o timer.o kbd.o phys_mem.o paging.o kmalloc.o gvga.o char.o windows.o \
+label.o pci.o dma.o fdc.o ide.o kernel.o -o kernel
 echo "done"
+mkdir -p iso/boot/grub
+cp ./kernel ./iso/boot
+cp grub.cfg ./iso/boot/grub
+grub2-mkrescue -o TinyOS32.iso iso
 echo " copy this kernel to a grub floppy and boot from it"
 rm -f *.o
 rm -f *.*~

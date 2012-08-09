@@ -1,0 +1,7 @@
+#make file kernel
+OBJS += kernel/kernel.o \
+	kernel/mboot.o \
+	kernel/phys_mem.o \
+	kernel/paging.o \
+	kernel/pagefault.o 
+	
