@@ -23,6 +23,8 @@ void write(char *cp) ;
 void putc(char c) ;
 void putch(char x);
 void gotoxy(unsigned x, unsigned y) ;
+unsigned int getX();
+unsigned int getY();
 void SetColour(Colours Text, Colours Back, bool blink);
 unsigned char GetBackColour();
 unsigned char GetTextColour();

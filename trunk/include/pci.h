@@ -1,5 +1,6 @@
 #ifndef __PCI_H__
 #define __PCI_H__
+#include "types.h"
 //copied from minirighi
 extern void putch(char c);
 extern void kprintf(const char *fmt,...);
@@ -234,7 +235,7 @@ typedef struct pci_cfg
 int pci_find_cfg(pci_cfg_t *cfg, int enable);
 void pci_scan();
 pci_cfg_t *pci_get_dev(unsigned char class, unsigned char subclass);
-void pci_dev_show_details(pci_cfg_t *dev);
+void pci_dev_show_details(pci_cfg_t *dev,bool t);
 unsigned int pci_dev_get_bar(pci_cfg_t *cfg, int bar_num);
 #endif
 

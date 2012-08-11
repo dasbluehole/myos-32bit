@@ -322,7 +322,7 @@ _irq0:
 	mov esp,eax
 	mov eax,esp
 	push eax
-;	call task_switch
+	call task_switch
 	mov esp,eax
     pop gs
     pop fs

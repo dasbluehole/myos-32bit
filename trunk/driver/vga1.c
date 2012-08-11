@@ -69,6 +69,14 @@ void gotoxy( int x, int y )
 	cur_cursorX = x;
 	cur_cursorY = y;
 }
+unsigned int getX()
+{
+	return (cur_cursorX);
+}
+unsigned int getY()
+{
+	return (cur_cursorY);
+}
 void update_cursor()
 {
 	gotoxy( cur_cursorX, cur_cursorY );
