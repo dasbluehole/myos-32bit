@@ -565,7 +565,7 @@ int pcibios_enable_device_io(pci_cfg_t *cfg)
 	unsigned short cmd, old_cmd;
 	unsigned int i;
 
-	kprintf("\n\rLow level enabling PCI device %d:%d:%d... ", cfg->bus, cfg->dev, cfg->func);
+	kprintf("Low level enabling PCI device %d:%d:%d... \n", cfg->bus, cfg->dev, cfg->func);
 
 	old_cmd = cmd = pci_read_config_word(cfg->bus, cfg->dev, cfg->func, PCI_COMMAND);
 	for (i=0; i<sizeof(cfg->type); i++)
@@ -576,7 +576,7 @@ int pcibios_enable_device_io(pci_cfg_t *cfg)
 	if ( !(cmd & PCI_COMMAND_IO) )
 	{
 		// Device is not IO-based				//
-		kprintf("\n\rDevice is not IO-based!!!");
+		kprintf("Device is not IO-based!!!\n");
 		return(-1); //invalid einval
 	}
 
@@ -598,10 +598,10 @@ int pcibios_enable_device_io(pci_cfg_t *cfg)
 				PCI_CACHE_LINE_SIZE, (32 << 8) | (L1_CACHE_BYTES / sizeof(unsigned int)));
 		// Enable the appropriate bits in the PCI command register	//
 		pci_write_config_word(cfg->bus, cfg->dev, cfg->func, PCI_COMMAND, cmd);
-		kprintf("OK!");
+		kprintf("OK!\n");
 	}
 	else
-		kprintf("Already enabled.");
+		kprintf("Already enabled.\n");
 	return(0);
 }
 //enables a device for IO.
@@ -609,20 +609,20 @@ int pci_enable_device(pci_cfg_t *cfg)
 {
 	int err, pm;
 
-	kprintf("\n\rPowering on PCI device %d:%d:%d... ", cfg->bus, cfg->dev, cfg->func);
+	kprintf("Powering on PCI device %d:%d:%d... \n", cfg->bus, cfg->dev, cfg->func);
 	pm = pci_set_power_state(cfg, 0);
 	switch( pm )
 	{
 		case 0:
-		kprintf("OK!");
+		kprintf("OK!\n");
 		break;
 
 		case (-2):
-		kprintf("\n\rDevice doesn't support Power Management Capabilities!!!");
+		kprintf("Device doesn't support Power Management Capabilities!!!\n");
 		break;
 
 		case (-1):
-		kprintf("\n\rDevice is already in this power state.");
+		kprintf("\n\rDevice is already in this power state.\n");
 		break;
 	}
 
@@ -664,47 +664,52 @@ int pci_find_cfg(pci_cfg_t *cfg, int enable)
 	kfree(pcfg);
 	return 0;
 }
-void pci_dev_show_details(pci_cfg_t *cfg)
+void pci_dev_show_details(pci_cfg_t *cfg, bool d)
 {
 	int i;
-	kprintf("\n\rPCI:%u:%u:%u", cfg->bus, cfg->dev,cfg->func);
-	kprintf("\n\rVendor       :%04X Device       :%04X\n\rSubSys_Vendor:%04X SubSys_Device:%04X",cfg->vendor_id, cfg->device_id, cfg->subsys_vendor, cfg->subsys_device);
-	kprintf("\n\rBase_Class   :%02X   Sub_Class    :%02X   Interface    :%02X",cfg->base_class, cfg->sub_class, cfg->interface);
-	for (i=0; i<6; i++) // 6 BARs in PCI devices
-	if (cfg->base[i])
-	{
-		if (cfg->type[i] == PCI_IO_RESOURCE_IO)
-		kprintf("\n\r* BAR %d IO: %06x (%06x)",i, cfg->base[i], cfg->size[i]);
-		else
-	    	kprintf("\n\r* BAR %d MM: %010x (%010x)",i, cfg->base[i] & 0xfffffff0, cfg->size[i]);
-	}
-	if (cfg->rom_base)
-		kprintf("\n\r* BAR ROM : %010x (%010x)",cfg->rom_base, cfg->rom_size);
+	kprintf("PCI:%u:%u:%u", cfg->bus, cfg->dev,cfg->func);
+	kprintf("Vendor :%04X Device :%04X SubSys_Vendor:%04X SubSys_Device:%04X\n",cfg->vendor_id, cfg->device_id, cfg->subsys_vendor, cfg->subsys_device);
+	kprintf("Base_Class :%02X   Sub_Class  :%02X   Interface  :%02X\n",cfg->base_class, cfg->sub_class, cfg->interface);
+
+	if(d)
+	{	
+		for (i=0; i<6; i++) // 6 BARs in PCI devices
+		if (cfg->base[i])
+		{
+			if (cfg->type[i] == PCI_IO_RESOURCE_IO)
+				kprintf("* BAR %d IO: %06x (%06x)\n",i, cfg->base[i], cfg->size[i]);
+			else
+	    			kprintf("* BAR %d MM: %010x (%010x)\n",i, cfg->base[i] & 0xfffffff0, cfg->size[i]);
+		}
+		if(cfg->rom_base)
+			kprintf("* BAR ROM : %010x (%010x)\n",cfg->rom_base, cfg->rom_size);
+	}	
 	if (cfg->irq)
-		kprintf("\n\r* Interrupt line: %u", cfg->irq);
+		kprintf("* Interrupt line: %u\n", cfg->irq);
 	switch(cfg->header_type & 0x7F)
 	{
 		case PCI_HEADER_TYPE_NORMAL:
-			kprintf("\n\r* Normal device");
+			kprintf("* Normal device\n");
 			break;
 
 		case PCI_HEADER_TYPE_BRIDGE:
-			kprintf("\n\r* PCI <-> PCI bridge");
+			kprintf("* PCI <-> PCI bridge\n");
 			break;
 
 		default:
-			kprintf("\n\r* Unknown header type");
+			kprintf("* Unknown header type\n");
 			break;
 	}
-	kprintf("\n\r");
+	kprintf("\n");
 }
+static int total_pcidevs;
 //scan all pcidevice in the system and enable it
 pci_cfg_t *pci_list;
 void pci_scan()
 {
 	unsigned short bus, dev, func;
-	
 	unsigned int i;
+	total_pcidevs = 0;
 	pci_cfg_t pcfg,*end;
 	if(!is_pci_present())
 	{
@@ -718,11 +723,14 @@ void pci_scan()
 	{
 		if ( pci_probe(bus, dev, func, &pcfg) )
 		{
+			kprintf("* Description : ");
+			total_pcidevs++;
 			for (i=0;; i++)
 			{
+				
 				if ( i>=PCI_CLASS_ENTRIES )
 				{
-					kprintf("\n\r* Description : Unknown device!");
+					kprintf("Unknown device!\n");
 					break;
 				}
 				// show the human redable class name of device
@@ -731,11 +739,11 @@ void pci_scan()
 					(classes[i].sub_class == pcfg.sub_class) &&
 					(classes[i].interface == pcfg.interface))
 				{
-					kprintf("\n\r* Description : %s", classes[i].name);
+					kprintf("%s\n", classes[i].name);
 					break;
 				}
 			}
-			pci_dev_show_details(&pcfg);
+			pci_dev_show_details(&pcfg,0);
 			pci_enable_device(&pcfg); // it doesn't harm if the device is already enabled.
 			
 			//here make a list of PCI devices so that we will refere it latter
@@ -764,7 +772,7 @@ void pci_scan()
 			kprintf("\n\r");
 		}
 	}
-	kprintf("\n\rPCI: finished\n\r");
+	kprintf("PCI: finished found %d PCI devices\n",total_pcidevs);
 }
 // browse the pci_list and return the device which is having class code and subclass code
 pci_cfg_t *pci_get_dev(unsigned char class, unsigned char subclass)

@@ -62,7 +62,9 @@ int kmain(int magic,multibootInfo *mbootinfo)
 	//init_floppy();
 	kprintf("TODO:scheduler,threads OR processes, Shell,Few applications ,etc\n");
 	
-	enable();	
+	enable();
+	//clear();
+	init_tasks();	
 	//detect_ide();
 	
 	//r_buf=(unsigned char*)kmalloc(512);
