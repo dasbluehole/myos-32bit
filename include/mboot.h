@@ -85,5 +85,6 @@ void show_memory_map(multibootInfo *bootInfo);
 unsigned long get_available_memory(multibootInfo *bootInfo);
 unsigned long get_used_memory(multibootInfo *bootInfo);
 void show_elf_info(multibootInfo *btinfo);
+char *get_boot_dev(multibootInfo *btinfo);
 
 #endif

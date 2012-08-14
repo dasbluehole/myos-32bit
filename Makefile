@@ -2,6 +2,8 @@ include x86/Makefile
 include kernel/Makefile
 include lib/Makefile
 include driver/Makefile
+include driver/ide/Makefile
+
 #include net/Makefile
 #include shell/Makefile
 

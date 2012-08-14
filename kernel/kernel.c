@@ -29,7 +29,7 @@ int kmain(int magic,multibootInfo *mbootinfo)
 		while(1);
 	}
 	SetBackColour(BLACK);	
-	SetTextColour(RED);
+	SetTextColour(BRIGHTWHITE);
 	show_memory_map(mbootinfo);	
 	kprintf("Setting up GDT\t");
 	setup_GDT();
@@ -55,18 +55,24 @@ int kmain(int magic,multibootInfo *mbootinfo)
 	kprintf("Starting Memory Manager(very basic: thanks Chris)\n");	
 	init_heap();
 	SetBackColour(BLACK);
-	SetTextColour(BRIGHTCYAN);
 	// pci_bus scan, it will create a global pci_list which is a doubly linked list of pci devices found	
 	pci_scan();
-	SetTextColour(WHITE);
+	SetTextColour(BRIGHTWHITE);
 	//init_floppy();
 	kprintf("TODO:scheduler,threads OR processes, Shell,Few applications ,etc\n");
 	
 	enable();
 	//clear();
-	init_tasks();	
-	//detect_ide();
-	
+	//init_tasks();	
+	init_ide();
+/* this block may be used latter
+	unsigned int *bd;
+	bd = (unsigned int *)get_boot_dev(mbootinfo);
+	kprintf("%0x %0x %0x %0x\n",(*bd & 0x000000ff),(*bd & 0x0000ff00)>>8,(*bd & 0x00ff0000)>>16,(*bd & 0xff000000)>>24 );
+	unsigned char ba[5]="";
+	strcat(ba,get_boot_dev(mbootinfo));
+	kprintf("%0x %0x %0x %0x\n",ba[0]&0xff,ba[1]&0xff,ba[2]&0xff,ba[3]&0xff);
+*/	
 	//r_buf=(unsigned char*)kmalloc(512);
 	//memset(r_buf,0,512);
 	//for(i=0;i<128;i++)
