@@ -19,14 +19,15 @@ void setup_GDT_entry (DESCR_SEG *item, dword base, dword limit, byte access, byt
 void lgdt(GDTR *mgdtr)
 {
 	__asm__ __volatile__ ("lgdt (%0)"::"p"(mgdtr));
-	__asm__ __volatile__("ljmp $8, $__flush\n"
-          "__flush:");
+	
 	__asm__ __volatile__("movl $0x10, %eax\n"
           "movw %ax, %ss\n"
           "movw %ax, %ds\n"
           "movw %ax, %es\n"
           "movw %ax, %fs\n"
           "movw %ax, %gs");
+	__asm__ __volatile__("ljmp $8, $__flush2\n"
+          "__flush2:");
 }
 void setup_GDT()
 {

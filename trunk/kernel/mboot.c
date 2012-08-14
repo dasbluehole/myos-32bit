@@ -59,4 +59,10 @@ unsigned int get_kernel_end()
 {
 	return(mboot.kernel_end);
 }
-
+char *get_boot_dev(multibootInfo *btinfo)
+{
+	static unsigned char bt_dev[5]={0xff,0xff,0xff,0xff};	
+	if (btinfo->flags & MULTIBOOT_BOOT_DEVICE)
+		strncpy(bt_dev, btinfo->bootDevice,4);
+	return bt_dev;
+}

@@ -23,7 +23,7 @@ void init_heap()
 	{
 		SetColour(RED,BLACK,0);
 		kprintf("Could not initialize Heap\n halting the kernel\n");
-		SetColour(WHITE,BLACK,0);		
+		SetColour(BRIGHTWHITE,BLACK,0);		
 		__asm__("cli");
 		__asm__("hlt");
 	}
@@ -55,7 +55,7 @@ void *kmalloc(size_t size)
 			//corrupt or error or un-initialized
 			SetColour(RED,BLACK,0);
 			kprintf("Corrupted Heap\n");
-			SetColour(WHITE,BLACK,0);
+			SetColour(BRIGHTWHITE,BLACK,0);
 			mutex_unlock(&km_mt);
 			return NULL;
 		}
@@ -92,7 +92,7 @@ void *kmalloc(size_t size)
 	mutex_unlock(&km_mt);
 	SetColour(RED,BLACK,0);
 	kprintf("No Memory for allocation %u available\n",mem_avail);
-	SetColour(WHITE,BLACK,0);
+	SetColour(BRIGHTWHITE,BLACK,0);
 	dump_heap();
 	
 	return NULL;	
