@@ -7,6 +7,8 @@
 #include "kbd.h"
 #include "kheap.h"
 #include "pci.h"
+#include "ide.h"
+#include "../driver/rtl/myrtl.h"
 
 unsigned int kend;
 extern unsigned start;
@@ -28,6 +30,14 @@ int kmain(int magic,multibootInfo *mbootinfo)
 		kprintf("BAD MULTIBOOT MAGIC!!! %010x Exiting",magic);
 		while(1);
 	}
+	kend = mboot.kernel_end;
+	show_memory_map(mbootinfo);
+	total_mem = get_available_memory(mbootinfo);
+	kprintf("Memory available =  %08x\n",get_available_memory(mbootinfo) );
+	show_elf_info(mbootinfo);
+	kprintf("Starting Memory Manager(very basic: thanks Chris)\n");	
+	init_heap();
+	SetBackColour(BLACK);	
 	SetBackColour(BLACK);	
 	SetTextColour(BRIGHTWHITE);
 	show_memory_map(mbootinfo);	
@@ -48,13 +58,6 @@ int kmain(int magic,multibootInfo *mbootinfo)
 	install_kbd();
 	kprintf("Done\n"); 
 	
-	show_memory_map(mbootinfo);
-	total_mem = get_available_memory(mbootinfo);
-	kprintf("Memory available =  %08x\n",get_available_memory(mbootinfo) );
-	show_elf_info(mbootinfo);
-	kprintf("Starting Memory Manager(very basic: thanks Chris)\n");	
-	init_heap();
-	SetBackColour(BLACK);
 	// pci_bus scan, it will create a global pci_list which is a doubly linked list of pci devices found	
 	pci_scan();
 	SetTextColour(BRIGHTWHITE);
@@ -65,14 +68,14 @@ int kmain(int magic,multibootInfo *mbootinfo)
 	//clear();
 	//init_tasks();	
 	init_ide();
-/* this block may be used latter
+// this block may be used latter
 	unsigned int *bd;
 	bd = (unsigned int *)get_boot_dev(mbootinfo);
 	kprintf("%0x %0x %0x %0x\n",(*bd & 0x000000ff),(*bd & 0x0000ff00)>>8,(*bd & 0x00ff0000)>>16,(*bd & 0xff000000)>>24 );
 	unsigned char ba[5]="";
 	strcat(ba,get_boot_dev(mbootinfo));
 	kprintf("%0x %0x %0x %0x\n",ba[0]&0xff,ba[1]&0xff,ba[2]&0xff,ba[3]&0xff);
-*/	
+	
 	//r_buf=(unsigned char*)kmalloc(512);
 	//memset(r_buf,0,512);
 	//for(i=0;i<128;i++)
@@ -87,7 +90,8 @@ int kmain(int magic,multibootInfo *mbootinfo)
 //	init_windows();
 //	errmsgbox("Test Error$","Hello World this is not enough$");
 //	displaymessages(100,100,"Hello World$",4);
-
+	detect_netdev();
+	dump_irq_routines();
 	while(1);	
 	halt();		
 }

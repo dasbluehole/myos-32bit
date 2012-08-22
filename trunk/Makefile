@@ -3,7 +3,7 @@ include kernel/Makefile
 include lib/Makefile
 include driver/Makefile
 include driver/ide/Makefile
-
+include driver/rtl/Makefile
 #include net/Makefile
 #include shell/Makefile
 

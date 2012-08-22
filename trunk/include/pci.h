@@ -229,7 +229,7 @@ typedef struct pci_cfg
 	unsigned char current_state;
 	struct pci_cfg *next,*prev;
 } pci_cfg_t;
-
+extern pci_cfg_t *pci_list;
 // --- Prototypes ----------------------------------------------------- //
 
 int pci_find_cfg(pci_cfg_t *cfg, int enable);
