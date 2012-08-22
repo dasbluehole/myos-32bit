@@ -12,9 +12,9 @@
 #define _STDIO_
 #include "types.h"
 #include "vga.h"
-int printf(const char*, ...);
+//int printf(const char*, ...);
 void pad_str(char*, char*, char, int, int);
-
+void hex_dump(void *data_p, unsigned count);
 char* gets(char*, int);
 int puts(char*);
 

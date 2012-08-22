@@ -6,7 +6,7 @@
 #include "string.h"
 
 #define	MALLOC_MAGIC	0x6D92	/* must be < 0x8000 */
-extern unsigned int end;
+extern unsigned int kend;
 extern unsigned int total_mem;
 static unsigned char *heap_bot,*heap_top;
 unsigned int mem_avail=0;
@@ -14,10 +14,10 @@ unsigned int times_allocated=0;
 unsigned int times_deallocated=0;
 void init_heap()
 {
-	heap_bot=(unsigned char*)end;
+	heap_bot=(unsigned char*)kend;
 	
 	heap_top=(unsigned char*)total_mem;
-	kprintf("heap bottom %08x heap top %08x\n",end,total_mem);
+	kprintf("heap bottom %08x heap top %08x\n",kend,total_mem);
 	malloc_t* m=(malloc_t*)heap_bot;
 	if(m==NULL)
 	{

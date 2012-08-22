@@ -10,8 +10,10 @@
 #include "stdio.h"
 #include "atarw.h"
 #include "helper.h"
+#include "drive.h"
+//#include "fat.h"
 
-static int ide_drv[4]={0}; // just for our convenience we limit to only 1 IDE card hence 4 drives
+static int ide_drv[4]={0,0,0,0}; // just for our convenience we limit to only 1 IDE card hence 4 drives
 				// this array will hold 1 for a detected drive 0 for not detected.
 				// after the initialization we will populate the actual hw data
 
@@ -206,6 +208,7 @@ bool detect_ide()
 				cur_slot=cur_slot->next;
 			}
 			//populate_slots();
+			temp = NULL;
 		}
 	}
 	return TRUE;
@@ -236,10 +239,12 @@ void populate_slots()
 	while(temp)
 	{
 		//if(ide_drv[i]==0) continue;
+		if(temp->drv_number>=4) break;
 		kprintf("Selecting ");
 		kprintf(temp->ps ? "Secondary ":"Primary ");
 		kprintf(temp->ms ? "Slave ":"Master ");
 		kprintf("drive Number : %d\n",temp->drv_number);
+		
 		select_device(temp);
 		if(is_device_ready(temp))
 		{
@@ -260,13 +265,13 @@ void populate_slots()
 		unsigned char temp2 = inportb(temp->chanl->base_reg + LBA_HI_REG);
 			
 		// Now if it is pata drive it will put an error flag in flags register
-		/*if(pio_inbyte(temp->chanl->base_reg + ERR_REG) & STA_ERR)
+		if(pio_inbyte(temp->chanl->base_reg + ERR_REG) & STA_ERR)
 		{
 			temp->devtype = PATA;
 			id_cmd = ATA_CMD_ID; // ATA Identify
-		}*/
+		}
 		
-		//else
+		else
 		{
 			
 			
@@ -352,8 +357,8 @@ void display_partition_info(partition *p)
 		cyl_hi = scy & 0x0003;
 		ecy >>=2;
 		ecy = ecy | (cyl_hi<<8);
-		kprintf("%-8s : %d %d %d <-> %d %d %d ",((p->boot_indicator == 0x80)?"A ":"  "),shd,ssc,scy,ehd,esc,ecy);
-		kprintf("%ld %ld ",p->start_lba,p->total_sectors);
+		kprintf("%c: %6d %6d %6d <-> %6d %6d %6d",((p->boot_indicator == 0x80)?'A':' '),shd,ssc,scy,ehd,esc,ecy);
+		kprintf(" %10ld %10ld ",p->start_lba,p->total_sectors);
 		kprintf("%02x\n",p->system_id);
 	}
 }
@@ -374,16 +379,76 @@ void display_slot_info()
 		if(temp->partition_table)
 		{
 			// show the partition s with infos
+			kprintf("================================Partition Table================================\n");
+			kprintf("Sl Ac   \tsh \tss \tsc         eh\tes\tec    \tslba  \ttotal ID\n");
 			int p;
 			for(p=0;p<4;p++)
 			{
 				kprintf("[%d] ",p+1);
 				display_partition_info(&temp->partition_table[p]);
 			}
+			kprintf("===============================================================================\n");
 		}
 	ml:
 		// we don't know how to handle except pata so skip
 		temp=temp->next;
+	}
+}
+my_drive *drives[26]={NULL};
+void scan_for_drives()
+{
+	slot *temp;
+	temp = slots;
+	int i=0;
+	while(temp)
+	{
+		if(i>=26)
+		{
+			kprintf("Sorry We don't handle morethan 26 drives\n");
+			break;		
+		}
+		if(!temp->devtype)
+		{
+			if(temp->partition_table)
+			{
+				int p;
+				for(p=0; p<4; p++)
+				{
+					if(temp->partition_table[p].total_sectors>0)
+					{
+						// we have a partition size so this could be a disk
+						drives[i] = my_drive_init(temp,p);
+						i++;
+						//kprintf("found a drive of size %ld",temp->partition_table[p].total_sectors);
+					}
+				}			
+			}
+		}
+		temp = temp->next;
+	}
+}
+void show_drive_info(int drv_num)
+{
+	unsigned char dump_buf[512],wrt_buf[512];
+	if(drives[drv_num] != NULL)
+	{
+		kprintf("part = %d of ",drives[drv_num]->part_num);
+		kprintf(drives[drv_num]->physical->ps ? "sec ":"pri ");
+		kprintf(drives[drv_num]->physical->ms ? "slv ":"mst ");
+		kprintf("size = %ld sys ID = %0x\n",drives[drv_num]->elba - drives[drv_num]->slba,drives[drv_num]->system_id);
+/* FOLLOWING CODE WAS TO TEST DRIVE READ AND WRITE
+		drive_read(drives[drv_num],0,dump_buf);
+		memcpy(wrt_buf,dump_buf,512);
+		int i;
+		for(i =0; i<20; i++)
+			wrt_buf[i]=0xff;
+		drive_write(drives[drv_num],0,wrt_buf);
+		for(i = 0; i<512; i++)
+		drive_read(drives[drv_num],0,wrt_buf);
+		hex_dump(wrt_buf,100);
+		drive_write(drives[drv_num],0,dump_buf);
+		hex_dump(dump_buf,100);
+*/
 	}
 }
 void init_ide()
@@ -391,9 +456,15 @@ void init_ide()
 	if(detect_ide())
 	{
 		populate_slots();
-		display_slot_info();
+		//display_slot_info();
 		// init a ide rw mutex here
 		init_mutex(&ata_rw_mutex);
+		scan_for_drives();
+/* THE FOLLOWING CODE IS TO CHECK IF WE COULD ENNUMERATE DRIVES PROPERLY
+		int i;
+		for(i=0;i<26;i++)
+			show_drive_info(i);
+*/		
 	}
 	else
 		kprintf("No PCI IDE found\n");

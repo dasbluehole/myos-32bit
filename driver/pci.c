@@ -777,7 +777,7 @@ void pci_scan()
 // browse the pci_list and return the device which is having class code and subclass code
 pci_cfg_t *pci_get_dev(unsigned char class, unsigned char subclass)
 {
-	pci_cfg_t *pb,*pd=NULL,*tmp;
+	pci_cfg_t *pb,*pd=NULL;
 	pb = pci_list;
 	int total_dev =0;
 	while(pb)
@@ -793,13 +793,7 @@ pci_cfg_t *pci_get_dev(unsigned char class, unsigned char subclass)
 		}
 		pb = pb->next;	
 	}
-	tmp = pd;
-	while(total_dev)
-	{
-		tmp =tmp->next;
-		total_dev--;
-	}
-	tmp->next=NULL;
+	
 	return pd;
 }
 unsigned int pci_dev_get_bar(pci_cfg_t *cfg, int bar_num)
