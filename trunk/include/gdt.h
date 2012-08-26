@@ -1,3 +1,14 @@
+/*
+|=========================================================|
+| This file is a part of TinyOS Copyright (C) 2008, 2012  |
+| ashok.s.das@gmail.com                                   |
+| Adopted here for TinyOS                                 |
+| ========================================================|
+|  GDT defination                                         |
+|  Taken from :                                           |
+|  License: LGPL, GPL-V2 or latter                        |
+|=========================================================|
+*/
 #ifndef __GDT_H__
 #define __GDT_H__
 /* Access byte's flags */

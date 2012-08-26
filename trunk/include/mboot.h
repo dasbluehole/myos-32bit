@@ -1,3 +1,14 @@
+/*
+|=========================================================|
+| This file is a part of TinyOS Copyright (C) 2008, 2012  |
+| ashok.s.das@gmail.com                                   |
+| Adopted here for TinyOS                                 |
+| ========================================================|
+|  Multiboot defination                                   |
+|  Taken from :                                           |
+|  License: LGPL, GPL-V2 or latter                        |
+|=========================================================|
+*/
 #ifndef __MBOOT_H__
 #define __MBOOT_H__
 

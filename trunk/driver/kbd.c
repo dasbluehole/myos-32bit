@@ -1,4 +1,15 @@
-/* keyboard handler routine */
+/*
+|=========================================================|
+| This file is a part of TinyOS Copyright (C) 2008, 2012  |
+| ashok.s.das@gmail.com                                   |
+| Adopted here for TinyOS                                 |
+| ========================================================|
+|  keyboard handler routine                               |
+|  Taken from :                                           |
+|  License: LGPL, GPL-V2 or latter                        |
+|=========================================================|
+*/
+/*  */
 #include "idt.h"
 #include "kbd.h"
 #include "low-io.h"

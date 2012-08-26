@@ -1,3 +1,14 @@
+/*
+|=========================================================|
+| This file is a part of TinyOS Copyright (C) 2008, 2012  |
+| ashok.s.das@gmail.com                                   |
+| Adopted here for TinyOS                                 |
+| ========================================================|
+|  Multiboot Implementation                               |
+|  Taken from :                                           |
+|  License: LGPL, GPL-V2 or latter                        |
+|=========================================================|
+*/
 #include "mboot.h"
 #include "stdio.h"
 unsigned long get_available_memory(multibootInfo *bootInfo)

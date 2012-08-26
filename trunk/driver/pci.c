@@ -1,4 +1,14 @@
-/*PCI Test code*/
+/*
+|=========================================================|
+| This file is a part of TinyOS Copyright (C) 2008, 2012  |
+| ashok.s.das@gmail.com                                   |
+| Adopted here for TinyOS                                 |
+| ========================================================|
+|  PCI subsystem routine                                  |
+|  Taken from :                                           |
+|  License: LGPL, GPL-V2 or latter                        |
+|=========================================================|
+*/
 #include "pci.h"
 #include "low-io.h"
 #include "stdio.h"
