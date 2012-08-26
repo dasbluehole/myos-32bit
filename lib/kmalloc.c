@@ -1,4 +1,14 @@
-
+/*
+|=========================================================|
+| This file is a part of TinyOS Copyright (C) 2008, 2012  |
+| ashok.s.das@gmail.com                                   |
+| Adopted here for TinyOS                                 |
+| ========================================================|
+|  Alloc implementation                                   |
+|  Taken from :                                           |
+|  License: LGPL, GPL-V2 or latter                        |
+|=========================================================|
+*/
 /* how much space to reserve on each call to sbrk() */
 #define GROW_MARGIN  1024*256
 #define NULL (void *)0

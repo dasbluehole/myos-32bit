@@ -1,3 +1,14 @@
+/*
+|=========================================================|
+| This file is a part of TinyOS Copyright (C) 2008, 2012  |
+| ashok.s.das@gmail.com                                   |
+| Adopted here for TinyOS                                 |
+| ========================================================|
+|  VGA Defination                                         |
+|  Taken from :                                           |
+|  License: LGPL, GPL-V2 or latter                        |
+|=========================================================|
+*/
 #ifndef _VGA_H_
 #define _VGA_H_
 #include "types.h"
